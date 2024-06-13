@@ -1,22 +1,42 @@
-declare module 'ytdl-core' {
-  import { Readable } from 'stream';
+declare module "ytdl-core" {
+  import { Readable } from "stream";
 
   // Utility to trick auto-complete to propose T and still accept string (#1188)
   type ExtendString<T extends string> = T | Omit<string, T>;
 
   namespace ytdl {
-    type Filter = 'audioandvideo' | 'videoandaudio' | 'video' | 'videoonly' | 'audio' | 'audioonly' | ((format: videoFormat) => boolean);
+    type Filter =
+      | "audioandvideo"
+      | "videoandaudio"
+      | "video"
+      | "videoonly"
+      | "audio"
+      | "audioonly"
+      | ((format: videoFormat) => boolean);
 
     interface getInfoOptions {
       lang?: string;
       requestCallback?: () => {};
-      requestOptions?: {};
+      requestOptions?: {
+        rewriteUrl: (url: string) => string;
+        [key: string]: any;
+      };
     }
 
-    type ChooseFormatQuality = 'lowest' | 'highest' | 'highestaudio' | 'lowestaudio' | 'highestvideo' | 'lowestvideo';
+    type ChooseFormatQuality =
+      | "lowest"
+      | "highest"
+      | "highestaudio"
+      | "lowestaudio"
+      | "highestvideo"
+      | "lowestvideo";
 
     interface chooseFormatOptions {
-      quality?: ExtendString<ChooseFormatQuality> | number | ExtendString<ChooseFormatQuality>[] | number[];
+      quality?:
+        | ExtendString<ChooseFormatQuality>
+        | number
+        | ExtendString<ChooseFormatQuality>[]
+        | number[];
       filter?: Filter;
       format?: videoFormat;
     }
@@ -33,7 +53,16 @@ declare module 'ytdl-core' {
       dlChunkSize?: number;
     }
 
-    type VideoFormatQuality = 'tiny' | 'small' | 'medium' | 'large' | 'hd720' | 'hd1080' | 'hd1440' | 'hd2160' | 'highres';
+    type VideoFormatQuality =
+      | "tiny"
+      | "small"
+      | "medium"
+      | "large"
+      | "hd720"
+      | "hd1080"
+      | "hd1440"
+      | "hd2160"
+      | "highres";
 
     interface videoFormat {
       itag: number;
@@ -48,13 +77,35 @@ declare module 'ytdl-core' {
       lastModified: string;
       contentLength: string;
       quality: ExtendString<VideoFormatQuality>;
-      qualityLabel: '144p' | '144p 15fps' | '144p60 HDR' | '240p' | '240p60 HDR' | '270p' | '360p' | '360p60 HDR'
-        | '480p' | '480p60 HDR' | '720p' | '720p60' | '720p60 HDR' | '1080p' | '1080p60' | '1080p60 HDR' | '1440p'
-        | '1440p60' | '1440p60 HDR' | '2160p' | '2160p60' | '2160p60 HDR' | '4320p' | '4320p60';
-      projectionType?: 'RECTANGULAR';
+      qualityLabel:
+        | "144p"
+        | "144p 15fps"
+        | "144p60 HDR"
+        | "240p"
+        | "240p60 HDR"
+        | "270p"
+        | "360p"
+        | "360p60 HDR"
+        | "480p"
+        | "480p60 HDR"
+        | "720p"
+        | "720p60"
+        | "720p60 HDR"
+        | "1080p"
+        | "1080p60"
+        | "1080p60 HDR"
+        | "1440p"
+        | "1440p60"
+        | "1440p60 HDR"
+        | "2160p"
+        | "2160p60"
+        | "2160p60 HDR"
+        | "4320p"
+        | "4320p60";
+      projectionType?: "RECTANGULAR";
       fps?: number;
       averageBitrate?: number;
-      audioQuality?: 'AUDIO_QUALITY_LOW' | 'AUDIO_QUALITY_MEDIUM';
+      audioQuality?: "AUDIO_QUALITY_LOW" | "AUDIO_QUALITY_MEDIUM";
       colorInfo?: {
         primaries: string;
         transferCharacteristics: string;
@@ -68,7 +119,7 @@ declare module 'ytdl-core' {
       audioChannels?: number;
 
       // Added by ytdl-core
-      container: 'flv' | '3gp' | 'mp4' | 'webm' | 'ts';
+      container: "flv" | "3gp" | "mp4" | "webm" | "ts";
       hasVideo: boolean;
       hasAudio: boolean;
       codecs: string;
@@ -86,27 +137,219 @@ declare module 'ytdl-core' {
       height: number;
     }
 
-    type CaptionTrackSimpleText = 'Afrikaans' | 'Albanian' | 'Amharic' | 'Arabic' | 'Armenian' | 'Azerbaijani' | 'Bangla' | 'Basque'
-    | 'Belarusian' | 'Bosnian' | 'Bulgarian' | 'Burmese' | 'Catalan' | 'Cebuano' | 'Chinese (Simplified)'
-    | 'Chinese (Traditional)' | 'Corsican' | 'Croatian' | 'Czech' | 'Danish' | 'Dutch' | 'English'
-    | 'English (auto-generated)' | 'Esperanto' | 'Estonian' | 'Filipino' | 'Finnish' | 'French' | 'Galician'
-    | 'Georgian' | 'German' | 'Greek' | 'Gujarati' | 'Haitian Creole' | 'Hausa' | 'Hawaiian' | 'Hebrew' | 'Hindi'
-    | 'Hmong' | 'Hungarian' | 'Icelandic' | 'Igbo' | 'Indonesian' | 'Irish' | 'Italian' | 'Japanese' | 'Javanese'
-    | 'Kannada' | 'Kazakh' | 'Khmer' | 'Korean' | 'Kurdish' | 'Kyrgyz' | 'Lao' | 'Latin' | 'Latvian' | 'Lithuanian'
-    | 'Luxembourgish' | 'Macedonian' | 'Malagasy' | 'Malay' | 'Malayalam' | 'Maltese' | 'Maori' | 'Marathi'
-    | 'Mongolian' | 'Nepali' | 'Norwegian' | 'Nyanja' | 'Pashto' | 'Persian' | 'Polish' | 'Portuguese' | 'Punjabi'
-    | 'Romanian' | 'Russian' | 'Samoan' | 'Scottish Gaelic' | 'Serbian' | 'Shona' | 'Sindhi' | 'Sinhala' | 'Slovak'
-    | 'Slovenian' | 'Somali' | 'Southern Sotho' | 'Spanish' | 'Spanish (Spain)' | 'Sundanese' | 'Swahili'
-    | 'Swedish' | 'Tajik' | 'Tamil' | 'Telugu' | 'Thai' | 'Turkish' | 'Ukrainian' | 'Urdu' | 'Uzbek' | 'Vietnamese'
-    | 'Welsh' | 'Western Frisian' | 'Xhosa' | 'Yiddish' | 'Yoruba' | 'Zulu';
+    type CaptionTrackSimpleText =
+      | "Afrikaans"
+      | "Albanian"
+      | "Amharic"
+      | "Arabic"
+      | "Armenian"
+      | "Azerbaijani"
+      | "Bangla"
+      | "Basque"
+      | "Belarusian"
+      | "Bosnian"
+      | "Bulgarian"
+      | "Burmese"
+      | "Catalan"
+      | "Cebuano"
+      | "Chinese (Simplified)"
+      | "Chinese (Traditional)"
+      | "Corsican"
+      | "Croatian"
+      | "Czech"
+      | "Danish"
+      | "Dutch"
+      | "English"
+      | "English (auto-generated)"
+      | "Esperanto"
+      | "Estonian"
+      | "Filipino"
+      | "Finnish"
+      | "French"
+      | "Galician"
+      | "Georgian"
+      | "German"
+      | "Greek"
+      | "Gujarati"
+      | "Haitian Creole"
+      | "Hausa"
+      | "Hawaiian"
+      | "Hebrew"
+      | "Hindi"
+      | "Hmong"
+      | "Hungarian"
+      | "Icelandic"
+      | "Igbo"
+      | "Indonesian"
+      | "Irish"
+      | "Italian"
+      | "Japanese"
+      | "Javanese"
+      | "Kannada"
+      | "Kazakh"
+      | "Khmer"
+      | "Korean"
+      | "Kurdish"
+      | "Kyrgyz"
+      | "Lao"
+      | "Latin"
+      | "Latvian"
+      | "Lithuanian"
+      | "Luxembourgish"
+      | "Macedonian"
+      | "Malagasy"
+      | "Malay"
+      | "Malayalam"
+      | "Maltese"
+      | "Maori"
+      | "Marathi"
+      | "Mongolian"
+      | "Nepali"
+      | "Norwegian"
+      | "Nyanja"
+      | "Pashto"
+      | "Persian"
+      | "Polish"
+      | "Portuguese"
+      | "Punjabi"
+      | "Romanian"
+      | "Russian"
+      | "Samoan"
+      | "Scottish Gaelic"
+      | "Serbian"
+      | "Shona"
+      | "Sindhi"
+      | "Sinhala"
+      | "Slovak"
+      | "Slovenian"
+      | "Somali"
+      | "Southern Sotho"
+      | "Spanish"
+      | "Spanish (Spain)"
+      | "Sundanese"
+      | "Swahili"
+      | "Swedish"
+      | "Tajik"
+      | "Tamil"
+      | "Telugu"
+      | "Thai"
+      | "Turkish"
+      | "Ukrainian"
+      | "Urdu"
+      | "Uzbek"
+      | "Vietnamese"
+      | "Welsh"
+      | "Western Frisian"
+      | "Xhosa"
+      | "Yiddish"
+      | "Yoruba"
+      | "Zulu";
 
-    type CaptionTrackLanguageCode = 'af' | 'sq' | 'am' | 'ar' | 'hy' | 'az' | 'bn' | 'eu' | 'be' | 'bs' | 'bg' | 'my' | 'ca' | 'ceb'
-    | 'zh-Hans' | 'zh-Hant' | 'co' | 'hr' | 'cs' | 'da' | 'nl' | 'en' | 'eo' | 'et' | 'fil' | 'fi' | 'fr' | 'gl'
-    | 'ka' | 'de' | 'el' | 'gu' | 'ht' | 'ha' | 'haw' | 'iw' | 'hi' | 'hmn' | 'hu' | 'is' | 'ig' | 'id' | 'ga' | 'it'
-    | 'ja' | 'jv' | 'kn' | 'kk' | 'km' | 'ko' | 'ku' | 'ky' | 'lo' | 'la' | 'lv' | 'lt' | 'lb' | 'mk' | 'mg' | 'ms'
-    | 'ml' | 'mt' | 'mi' | 'mr' | 'mn' | 'ne' | 'no' | 'ny' | 'ps' | 'fa' | 'pl' | 'pt' | 'pa' | 'ro' | 'ru' | 'sm'
-    | 'gd' | 'sr' | 'sn' | 'sd' | 'si' | 'sk' | 'sl' | 'so' | 'st' | 'es' | 'su' | 'sw' | 'sv' | 'tg' | 'ta' | 'te'
-    | 'th' | 'tr' | 'uk' | 'ur' | 'uz' | 'vi' | 'cy' | 'fy' | 'xh' | 'yi' | 'yo' | 'zu';
+    type CaptionTrackLanguageCode =
+      | "af"
+      | "sq"
+      | "am"
+      | "ar"
+      | "hy"
+      | "az"
+      | "bn"
+      | "eu"
+      | "be"
+      | "bs"
+      | "bg"
+      | "my"
+      | "ca"
+      | "ceb"
+      | "zh-Hans"
+      | "zh-Hant"
+      | "co"
+      | "hr"
+      | "cs"
+      | "da"
+      | "nl"
+      | "en"
+      | "eo"
+      | "et"
+      | "fil"
+      | "fi"
+      | "fr"
+      | "gl"
+      | "ka"
+      | "de"
+      | "el"
+      | "gu"
+      | "ht"
+      | "ha"
+      | "haw"
+      | "iw"
+      | "hi"
+      | "hmn"
+      | "hu"
+      | "is"
+      | "ig"
+      | "id"
+      | "ga"
+      | "it"
+      | "ja"
+      | "jv"
+      | "kn"
+      | "kk"
+      | "km"
+      | "ko"
+      | "ku"
+      | "ky"
+      | "lo"
+      | "la"
+      | "lv"
+      | "lt"
+      | "lb"
+      | "mk"
+      | "mg"
+      | "ms"
+      | "ml"
+      | "mt"
+      | "mi"
+      | "mr"
+      | "mn"
+      | "ne"
+      | "no"
+      | "ny"
+      | "ps"
+      | "fa"
+      | "pl"
+      | "pt"
+      | "pa"
+      | "ro"
+      | "ru"
+      | "sm"
+      | "gd"
+      | "sr"
+      | "sn"
+      | "sd"
+      | "si"
+      | "sk"
+      | "sl"
+      | "so"
+      | "st"
+      | "es"
+      | "su"
+      | "sw"
+      | "sv"
+      | "tg"
+      | "ta"
+      | "te"
+      | "th"
+      | "tr"
+      | "uk"
+      | "ur"
+      | "uz"
+      | "vi"
+      | "cy"
+      | "fy"
+      | "xh"
+      | "yi"
+      | "yo"
+      | "zu";
 
     interface captionTrack {
       baseUrl: string;
@@ -125,8 +368,8 @@ declare module 'ytdl-core' {
     }
 
     interface translationLanguage {
-      languageCode: captionTrack['languageCode'];
-      languageName: captionTrack['name'];
+      languageCode: captionTrack["languageCode"];
+      languageName: captionTrack["name"];
     }
 
     interface VideoDetails {
@@ -228,7 +471,9 @@ declare module 'ytdl-core' {
       start_time: number;
     }
 
-    interface MoreVideoDetails extends Omit<VideoDetails, 'author' | 'thumbnail' | 'shortDescription'>, Omit<MicroformatRenderer, 'title' | 'description'> {
+    interface MoreVideoDetails
+      extends Omit<VideoDetails, "author" | "thumbnail" | "shortDescription">,
+        Omit<MicroformatRenderer, "title" | "description"> {
       published: number;
       video_url: string;
       age_restricted: boolean;
@@ -406,7 +651,7 @@ declare module 'ytdl-core' {
       id?: string;
       title?: string;
       published?: string;
-      author: Author | 'string'; // to remove the `string` part later
+      author: Author | "string"; // to remove the `string` part later
       ucid?: string; // to remove later
       author_thumbnail?: string; // to remove later
       short_view_count_text?: string;
@@ -418,11 +663,23 @@ declare module 'ytdl-core' {
       isLive: boolean;
     }
 
-    function getBasicInfo(url: string, options?: getInfoOptions): Promise<videoInfo>;
+    function getBasicInfo(
+      url: string,
+      options?: getInfoOptions
+    ): Promise<videoInfo>;
     function getInfo(url: string, options?: getInfoOptions): Promise<videoInfo>;
-    function downloadFromInfo(info: videoInfo, options?: downloadOptions): Readable;
-    function chooseFormat(format: videoFormat | videoFormat[], options?: chooseFormatOptions): videoFormat | never;
-    function filterFormats(formats: videoFormat | videoFormat[], filter?: Filter): videoFormat[];
+    function downloadFromInfo(
+      info: videoInfo,
+      options?: downloadOptions
+    ): Readable;
+    function chooseFormat(
+      format: videoFormat | videoFormat[],
+      options?: chooseFormatOptions
+    ): videoFormat | never;
+    function filterFormats(
+      formats: videoFormat | videoFormat[],
+      filter?: Filter
+    ): videoFormat[];
     function validateID(string: string): boolean;
     function validateURL(string: string): boolean;
     function getURLVideoID(string: string): string | never;
