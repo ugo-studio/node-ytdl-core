@@ -19,7 +19,7 @@ declare module "ytdl-core" {
       rewriteUrl?: (url: string) => string;
       rewriteRequestOptions?: (req?: { [key: string]: any }, url: string) => {
         [key: string]: any;
-      };
+      } | undefined;
       requestCallback?: (res: any) => {};
       requestOptions?: {
         [key: string]: any;
