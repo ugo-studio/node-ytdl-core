@@ -16,9 +16,12 @@ declare module "ytdl-core" {
 
     interface getInfoOptions {
       lang?: string;
-      requestCallback?: () => {};
+      rewriteUrl?: (url: string) => string;
+      rewriteRequestOptions?: (req?: { [key: string]: any }) => {
+        [key: string]: any;
+      };
+      requestCallback?: (res: any) => {};
       requestOptions?: {
-        rewriteUrl?: (url: string) => string;
         [key: string]: any;
       };
     }
